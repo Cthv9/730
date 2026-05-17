@@ -105,61 +105,137 @@
 <body>
 <h1>Caricamento Documenti Modello 730 Congiunto</h1>
 <form id="uploadForm">
+
   <div class="section" id="section1">
     <h3>1. Dati personali</h3>
-    <div class="item">Documento d’identità tuo: <input type="file" name="1_documento_identita" multiple></div>
-    <div class="item">Documento d’identità partner: <input type="file" name="1_documento_identita_partner" multiple></div>
+    <div class="item">Documento d'identità tuo: <input type="file" name="1_documento_identita" multiple></div>
+    <div class="item">Documento d'identità partner: <input type="file" name="1_documento_identita_partner" multiple></div>
     <div class="item">Tessera sanitaria tua: <input type="file" name="1_tessera_sanitaria" multiple></div>
     <div class="item">Tessera sanitaria partner: <input type="file" name="1_tessera_sanitaria_partner" multiple></div>
+    <div class="item">Tessera esenzione SSN (patologie con esenzione): <input type="file" name="1_tessera_esenzione_ssn" multiple></div>
+    <div class="item">Verbali di invalidità (Commissioni Pubbliche – dichiarante, coniuge, familiari): <input type="file" name="1_verbali_invalidita" multiple></div>
     <div class="item">Altro: <input type="file" name="1_altro" multiple></div>
   </div>
+
   <div class="section" id="section2">
     <h3>2. Dati generali</h3>
-    <div class="item">Dichiarazione redditi precedente: <input type="file" name="2_dichiarazione_precedente" multiple></div>
+    <div class="item">Dichiarazione redditi precedente (Mod. 730/2025 o REDDITI 2025) e dichiarazioni integrative: <input type="file" name="2_dichiarazione_precedente" multiple></div>
+    <div class="item">CU 2026 di familiari fiscalmente a carico (coniuge, figli): <input type="file" name="2_cu_familiari_carico" multiple></div>
+    <div class="item">Documentazione handicap Legge 104/92 (per figli portatori di handicap): <input type="file" name="2_doc_handicap_104" multiple></div>
     <div class="item">Altro: <input type="file" name="2_altro" multiple></div>
   </div>
+
   <div class="section" id="section3">
     <h3>3. Terreni e fabbricati</h3>
     <div class="item">Visure catastali aggiornate: <input type="file" name="3_visure_catastali" multiple></div>
-    <div class="item">Atti notarili acquisti/vendite: <input type="file" name="3_atti_notarili" multiple></div>
-    <div class="item">Contratti di locazione: <input type="file" name="3_contratti_locazione" multiple></div>
+    <div class="item">Atti notarili acquisti/vendite/eredità 2025: <input type="file" name="3_atti_notarili" multiple></div>
+    <div class="item">Contratti di locazione 2025: <input type="file" name="3_contratti_locazione" multiple></div>
+    <div class="item">Cedolare secca – Mod. 69 / Siria / RLI e comunicazione all'inquilino: <input type="file" name="3_cedolare_secca" multiple></div>
+    <div class="item">Locazioni brevi – CU 2025 e CU 2026 rilasciate da intermediari: <input type="file" name="3_cu_locazioni_brevi" multiple></div>
+    <div class="item">Locazioni brevi – Codice Identificativo Nazionale (CIN): <input type="file" name="3_cin" multiple></div>
     <div class="item">Altro: <input type="file" name="3_altro" multiple></div>
   </div>
+
   <div class="section" id="section4">
     <h3>4. Redditi</h3>
-    <div class="item">Certificazione Unica tua: <input type="file" name="4_cu2025" multiple></div>
-    <div class="item">Certificazione Unica partner: <input type="file" name="4_cu2025_partner" multiple></div>
+    <div class="item">Certificazione Unica 2026 tua (lavoro dipendente, pensione, assimilati): <input type="file" name="4_cu2026" multiple></div>
+    <div class="item">Certificazione Unica 2026 partner: <input type="file" name="4_cu2026_partner" multiple></div>
+    <div class="item">Documentazione pensioni erogate da stati esteri: <input type="file" name="4_pensioni_estere" multiple></div>
+    <div class="item">Perizia giurata di stima + Mod. F24 per rivalutazione terreni/partecipazioni 2025: <input type="file" name="4_perizia_rivalutazione" multiple></div>
+    <div class="item">Imposte e oneri rimborsati nel 2025 (se detratti/dedotti in anni precedenti): <input type="file" name="4_oneri_rimborsati" multiple></div>
     <div class="item">Altro: <input type="file" name="4_altro" multiple></div>
   </div>
+
   <div class="section" id="section5">
     <h3>5. Altri redditi</h3>
-	<div class="item">Altri redditi: <input type="file" name="5_altri_redditi" multiple></div>
+    <div class="item">Altri redditi 2025 (assegni periodici da ex coniuge, indennità pubbliche, utili societari, opere d'ingegno, attività commerciali occasionali, borse di studio, sport dilettantistico, partecipazioni in società di persone, capital gains, mance, ecc.): <input type="file" name="5_altri_redditi" multiple></div>
     <div class="item">Altro: <input type="file" name="5_altro" multiple></div>
   </div>
+
   <div class="section" id="section6">
     <h3>6. Oneri e spese detraibili</h3>
-    <div class="item">Spese sanitarie: <input type="file" name="6_spese_sanitarie" multiple></div>
-    <div class="item">Spese istruzione/scuola/università: <input type="file" name="6_spese_istruzione" multiple></div>
-    <div class="item">Abbonamenti trasporto pubblico: <input type="file" name="6_abbonamenti_trasporto" multiple></div>
-	<div class="item">Documenti bonus edilizi/ristrutturazioni: <input type="file" name="6_bonus_edilizi" multiple></div>
-    <div class="item">Documenti risparmio energetico: <input type="file" name="6_risparmio_energetico" multiple></div>
-    <div class="item">Documenti bonus verde: <input type="file" name="6_bonus_verde" multiple></div>
+    <div class="item">Spese sanitarie (fatture, scontrini parlanti con AIC, ricevute medici): <input type="file" name="6_spese_sanitarie" multiple></div>
+    <div class="item">Spese per minori o maggiorenni con DSA (certificato medico + fatture): <input type="file" name="6_spese_dsa" multiple></div>
+    <div class="item">Spese assistenza infermieristica e riabilitativa: <input type="file" name="6_assistenza_infermieristica" multiple></div>
+    <div class="item">Spese per addetti all'assistenza personale (non autosufficienza): <input type="file" name="6_assistenza_personale" multiple></div>
+    <div class="item">Fatture/ricevute strutture residenziali (case di riposo – spese mediche e di assistenza): <input type="file" name="6_case_riposo" multiple></div>
+    <div class="item">Veicoli per persone con disabilità (documentazione acquisto, patente speciale, libretto): <input type="file" name="6_veicoli_disabilita" multiple></div>
+    <div class="item">Interessi passivi mutuo ipotecario – acquisto abitazione principale (dichiarazione interessi, contratto mutuo, atto acquisto, oneri accessori): <input type="file" name="6_mutuo_acquisto" multiple></div>
+    <div class="item">Interessi passivi mutuo ipotecario – costruzione/ristrutturazione abitazione principale (dichiarazione interessi, contratto mutuo, fatture lavori, concessione edilizia): <input type="file" name="6_mutuo_costruzione" multiple></div>
+    <div class="item">Premi assicurativi vita/infortuni/invalidità permanente/non autosufficienza/disabilità grave: <input type="file" name="6_premi_assicurativi" multiple></div>
+    <div class="item">Premi assicurativi rischio eventi calamitosi (immobili ad uso abitativo): <input type="file" name="6_premi_calamitosi" multiple></div>
+    <div class="item">Spese istruzione (scuola infanzia, primo ciclo, secondaria, università, conservatori, AFAM, scuole di musica, cori, bande): <input type="file" name="6_spese_istruzione" multiple></div>
+    <div class="item">Abbonamenti trasporto pubblico locale, regionale, interregionale: <input type="file" name="6_abbonamenti_trasporto" multiple></div>
+    <div class="item">Spese funebri: <input type="file" name="6_spese_funebri" multiple></div>
+    <div class="item">Iscrizione associazioni sportive dilettantistiche per ragazzi 5–18 anni (palestre, piscine, impianti sportivi): <input type="file" name="6_sport_ragazzi" multiple></div>
+    <div class="item">Compensi intermediazione immobiliare (acquisto abitazione principale): <input type="file" name="6_intermediazione_immobiliare" multiple></div>
+    <div class="item">Canoni di locazione studenti universitari fuori sede: <input type="file" name="6_locazione_studenti" multiple></div>
+    <div class="item">Spese veterinarie: <input type="file" name="6_spese_veterinarie" multiple></div>
+    <div class="item">Rette asili nido: <input type="file" name="6_asili_nido" multiple></div>
+    <div class="item">Erogazioni liberali (partiti politici, Onlus, ETS, associazioni sportive, mutuo soccorso, disabilità grave, Fondo ammortamento titoli di Stato): <input type="file" name="6_erogazioni_liberali" multiple></div>
+    <div class="item">Art bonus (istituzioni concertistiche, teatri nazionali, festival, centri di produzione teatrale e di danza): <input type="file" name="6_art_bonus" multiple></div>
+    <div class="item">School bonus (istituti del sistema nazionale di istruzione): <input type="file" name="6_school_bonus" multiple></div>
+    <div class="item">Sport bonus (manutenzione/realizzazione impianti sportivi pubblici): <input type="file" name="6_sport_bonus" multiple></div>
+    <div class="item">Social bonus (enti del Terzo Settore): <input type="file" name="6_social_bonus" multiple></div>
+    <div class="item">Bonifica ambientale: <input type="file" name="6_bonifica_ambientale" multiple></div>
+    <div class="item">Videosorveglianza (documentazione spese + comunicazione Agenzia delle Entrate): <input type="file" name="6_videosorveglianza" multiple></div>
+    <div class="item">Pace contributiva (riscatto periodi non coperti da contribuzione): <input type="file" name="6_pace_contributiva" multiple></div>
+    <div class="item">Infrastrutture di ricarica veicoli elettrici (acquisto e posa in opera): <input type="file" name="6_ricarica_elettrica" multiple></div>
+    <div class="item">Attività fisica adattata: <input type="file" name="6_attivita_fisica_adattata" multiple></div>
+    <div class="item">Sistemi di accumulo integrati in impianti fotovoltaici (fonti rinnovabili): <input type="file" name="6_sistemi_accumulo" multiple></div>
+    <div class="item">Fondazioni ITS Academy: <input type="file" name="6_its_academy" multiple></div>
+    <div class="item">Bonus edilizi/ristrutturazioni 36%–75% (bonifici, fatture, dati catastali; certificazione amministratore per parti comuni): <input type="file" name="6_bonus_edilizi" multiple></div>
+    <div class="item">Superbonus 110%/90%/65% (riqualificazione energetica, antisismica, fotovoltaico, colonnine ricarica): <input type="file" name="6_superbonus" multiple></div>
+    <div class="item">Risparmio energetico 55%–75% (fatture, bonifici, asseverazione tecnico, attestato energetico, scheda ENEA): <input type="file" name="6_risparmio_energetico" multiple></div>
+    <div class="item">Restauro facciate esterne 90%/60% (fatture, bonifici, abilitazioni, dichiarazione Comune, ENEA): <input type="file" name="6_restauro_facciate" multiple></div>
+    <div class="item">Bonus verde – sistemazione aree private e parti comuni (bonifici, documentazione fiscale): <input type="file" name="6_bonus_verde" multiple></div>
+    <div class="item">Bonus mobili / grandi elettrodomestici (fatture, bonifici, nuovo acquisto abbinato a ristrutturazione): <input type="file" name="6_bonus_mobili" multiple></div>
+    <div class="item">Detrazione inquilini – contratto di locazione abitazione principale + F24 imposta di registro 2025 (o comunicazione cedolare secca): <input type="file" name="6_detrazione_inquilini" multiple></div>
+    <div class="item">Contratti di leasing per acquisto abitazione principale (contratto + importi versati): <input type="file" name="6_leasing_abitazione" multiple></div>
+    <div class="item">Cessione/sconto in fattura bonus edilizi – Modulo Comunicazione Agenzia Entrate + ricevuta trasmissione: <input type="file" name="6_cessione_credito" multiple></div>
     <div class="item">Altro: <input type="file" name="6_altro" multiple></div>
   </div>
+
   <div class="section" id="section7">
     <h3>7. Oneri e spese deducibili</h3>
-    <div class="item">Contributi previdenziali INPS tuo: <input type="file" name="7_contributi_inps" multiple></div>
-    <div class="item">Contributi previdenziali INPS partner: <input type="file" name="7_contributi_inps_partner" multiple></div>
-    <div class="item">Assegni periodici al coniuge: <input type="file" name="7_assegni_coniuge" multiple></div>
+    <div class="item">Contributi previdenziali obbligatori INPS dichiarante (gestione separata, agricoli, INAIL casalinghe): <input type="file" name="7_contributi_inps" multiple></div>
+    <div class="item">Contributi previdenziali obbligatori INPS partner: <input type="file" name="7_contributi_inps_partner" multiple></div>
+    <div class="item">Contributi volontari (ricongiunzione periodi assicurativi, riscatto anni di laurea): <input type="file" name="7_contributi_volontari" multiple></div>
+    <div class="item">Assegni periodici al coniuge separato/divorziato (ricevute + sentenza + codice fiscale coniuge): <input type="file" name="7_assegni_coniuge" multiple></div>
+    <div class="item">Contributi previdenziali e assistenziali per colf / baby-sitter: <input type="file" name="7_contributi_colf" multiple></div>
+    <div class="item">Erogazioni liberali a favore di istituzioni religiose: <input type="file" name="7_erogazioni_religiose" multiple></div>
+    <div class="item">Spese mediche generiche e di assistenza specifica per portatori di handicap (deducibili): <input type="file" name="7_spese_mediche_handicap" multiple></div>
+    <div class="item">Contributi a Organizzazioni non Governative (ONG): <input type="file" name="7_contributi_ong" multiple></div>
+    <div class="item">Contributi a forme pensionistiche complementari e/o individuali: <input type="file" name="7_pensione_complementare" multiple></div>
+    <div class="item">Spese adozione minori stranieri (certificazione ente autorizzato): <input type="file" name="7_adozione_minori" multiple></div>
+    <div class="item">Erogazioni liberali a ONLUS / APS / ETS / enti universitari / enti parco regionali e nazionali: <input type="file" name="7_erogazioni_onlus_ets" multiple></div>
+    <div class="item">Spese acquisto/costruzione immobili abitativi da destinare a locazione (≥ 8 anni): <input type="file" name="7_immobili_locazione" multiple></div>
     <div class="item">Altro: <input type="file" name="7_altro" multiple></div>
   </div>
+
   <div class="section" id="section8">
     <h3>8. Acconti versati</h3>
-    <div class="item">Modelli F24 pagamenti acconti: <input type="file" name="8_modelli_f24" multiple></div>
+    <div class="item">Modelli F24 – acconti IRPEF, Addizionale Comunale, Cedolare Secca e compensazioni d'imposta 2025/2026: <input type="file" name="8_modelli_f24" multiple></div>
     <div class="item">Altro: <input type="file" name="8_altro" multiple></div>
   </div>
+
+  <div class="section" id="section9">
+    <h3>9. Redditi soggetti a tassazione speciale</h3>
+    <div class="item">Plusvalenze finanziarie – cessioni partecipazioni qualificate/non qualificate, obbligazioni, capital gains: <input type="file" name="9_plusvalenze_finanziarie" multiple></div>
+    <div class="item">Criptovalute – plusvalenze e altri proventi da cripto-attività: <input type="file" name="9_criptovalute" multiple></div>
+    <div class="item">Investimenti finanziari e immobiliari all'estero – IVIE / IVAFE (monitoraggio fiscale): <input type="file" name="9_investimenti_estero" multiple></div>
+    <div class="item">Redditi soggetti a tassazione separata, imposta sostitutiva, rivalutazione terreni/partecipazioni: <input type="file" name="9_tassazione_separata" multiple></div>
+    <div class="item">Altro: <input type="file" name="9_altro" multiple></div>
+  </div>
+
+  <div class="section" id="section10">
+    <h3>10. Categorie speciali</h3>
+    <div class="item">Quadro K – Amministratori di condominio: elenco fornitori condominiali e dati catastali immobili con interventi parti comuni: <input type="file" name="10_quadro_k_condominio" multiple></div>
+    <div class="item">Altro: <input type="file" name="10_altro" multiple></div>
+  </div>
+
 </form>
-<div id="counter">Sezioni completate: 0 / 8</div>
+<div id="counter">Sezioni completate: 0 / 10</div>
 <div id="fileCounter">File caricati: 0</div>
 <div class="progress-bar-container">
   <div id="progressBar" class="progress-bar"></div>
@@ -200,6 +276,7 @@ function validateFiles(input) {
 function updateCounter() {
   const form = document.getElementById('uploadForm');
   const sections = form.querySelectorAll('.section');
+  const totalSections = sections.length;
   let completedSections = 0;
   let totalFiles = 0;
 
@@ -217,8 +294,8 @@ function updateCounter() {
     if (hasFiles) completedSections++;
   });
 
-  document.getElementById('counter').innerText = `Sezioni completate: ${completedSections} / 8`;
-  document.getElementById('progressBar').style.width = (completedSections / 8) * 100 + '%';
+  document.getElementById('counter').innerText = `Sezioni completate: ${completedSections} / ${totalSections}`;
+  document.getElementById('progressBar').style.width = (completedSections / totalSections) * 100 + '%';
   document.getElementById('fileCounter').innerText = `File caricati: ${totalFiles}`;
 }
 
@@ -297,14 +374,13 @@ let deferredPrompt;
 const installButton = document.getElementById('installButton');
 
 window.addEventListener('beforeinstallprompt', (e) => {
-  // Previene il banner automatico
   e.preventDefault();
   deferredPrompt = e;
-  installButton.style.display = 'block'; // Mostra il bottone
+  installButton.style.display = 'block';
 
   installButton.addEventListener('click', () => {
-    installButton.style.display = 'none'; // Nasconde il bottone dopo click
-    deferredPrompt.prompt(); // Mostra il vero prompt di installazione
+    installButton.style.display = 'none';
+    deferredPrompt.prompt();
 
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
@@ -316,7 +392,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
     });
   });
 });
-
 </script>
 </body>
 </html>
