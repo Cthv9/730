@@ -1,6 +1,6 @@
 # 730 Congiunto – Raccolta Documenti
 
-App web PWA per raccogliere e organizzare i documenti necessari alla compilazione del **Modello 730/2026 (redditi 2025)**, basata sull'elenco ufficiale CAF ACLI.
+App web PWA per raccogliere e organizzare i documenti necessari alla compilazione del **Modello 730 (ultimo update per redditi 2025)**, basata sull'elenco ufficiale CAF ACLI.
 
 By DF
 
@@ -35,7 +35,6 @@ By DF
 ```
 730/
 ├── index.html          # App principale
-├── demo.html           # Versione demo semplificata
 ├── manifest.json       # PWA manifest
 ├── service-worker.js   # Cache offline (v2)
 ├── libs/
