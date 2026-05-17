@@ -8,10 +8,26 @@
   <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
   <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512x512.png">
   <link rel="manifest" href="manifest.json">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self'; worker-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <script src="libs/jszip.min.js"></script>
+  <script src="libs/FileSaver.min.js"></script>
   <style>
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('fonts/poppins-latin-400-normal.woff2') format('woff2'),
+           url('fonts/poppins-latin-400-normal.woff') format('woff');
+    }
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url('fonts/poppins-latin-600-normal.woff2') format('woff2'),
+           url('fonts/poppins-latin-600-normal.woff') format('woff');
+    }
     body {
       font-family: 'Poppins', sans-serif;
       background-color: #f7f9fc;
@@ -103,6 +119,9 @@
   </style>
 </head>
 <body>
+<div style="background:#e8f5e9;border-left:4px solid #4caf50;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:13px;color:#2e7d32;">
+  🔒 <strong>Privacy:</strong> tutti i file che carichi rimangono esclusivamente nel tuo browser. Nessun dato viene mai inviato a server esterni. L'app funziona completamente offline e non effettua connessioni a internet.
+</div>
 <h1>Caricamento Documenti Modello 730 Congiunto</h1>
 <form id="uploadForm">
 
@@ -267,6 +286,11 @@ function validateFiles(input) {
     }
     if (file.name.length > maxFilenameLength) {
       alert(`Il nome del file è troppo lungo: ${file.name}`);
+      input.value = '';
+      return;
+    }
+    if (file.size > maxFileSize) {
+      alert(`Il file supera il limite di 5 MB: ${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)`);
       input.value = '';
       return;
     }
