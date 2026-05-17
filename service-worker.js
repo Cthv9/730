@@ -1,4 +1,4 @@
-const CACHE_NAME = '730-congiunto-cache-v2';
+const CACHE_NAME = '730-congiunto-cache-v3';
 const urlsToCache = [
   '/730/',
   '/730/index.html',
@@ -19,6 +19,9 @@ self.addEventListener('install', function(event) {
       .then(function(cache) {
         return cache.addAll(urlsToCache);
       })
+      .then(function() {
+        return self.skipWaiting();
+      })
   );
 });
 
@@ -32,6 +35,8 @@ self.addEventListener('activate', function(event) {
           return caches.delete(name);
         })
       );
+    }).then(function() {
+      return self.clients.claim();
     })
   );
 });
