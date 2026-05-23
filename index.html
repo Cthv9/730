@@ -12,6 +12,19 @@
   <script src="libs/jszip.min.js"></script>
   <script src="libs/FileSaver.min.js"></script>
   <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --bg-light: #f8fafc;
+      --bg-muted: #f1f5f9;
+      --border-muted: #e2e8f0;
+      --border-dashed: #cbd5e1;
+      --text-primary: #1e293b;
+      --text-muted: #64748b;
+      --accent-green: #10b981;
+      --accent-green-light: #d1fae5;
+    }
+
     @font-face {
       font-family: 'Poppins';
       font-style: normal;
@@ -28,151 +41,400 @@
       src: url('fonts/poppins-latin-600-normal.woff2') format('woff2'),
            url('fonts/poppins-latin-600-normal.woff') format('woff');
     }
+
+    * { box-sizing: border-box; }
+
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #f7f9fc;
-      margin: 20px;
-      color: #333;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      color: var(--text-primary);
     }
-    .section {
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    label, .item {
-      display: block;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-    input[type="file"] {
-      display: block;
-      margin-top: 6px;
-      padding: 12px;
-      border: 2px dashed #ccc;
-      border-radius: 10px;
-      background: #eef4fb;
-      width: 100%;
-      cursor: pointer;
+
+    #heroHeader {
+      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+      color: white;
+      padding: 32px 16px;
       text-align: center;
-      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(30, 58, 95, 0.15);
     }
-    input[type="file"]::file-selector-button {
-      padding: 10px 20px;
-      background-color: #3498db;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    input[type="file"]::file-selector-button:hover {
-      background-color: #2980b9;
-    }
-    h1 {
+
+    #heroHeader h1 {
+      margin: 0 0 8px 0;
+      font-size: 24px;
       font-weight: 600;
-      font-size: 28px;
-      margin-bottom: 20px;
-      color: #2c3e50;
     }
-    h3 {
-      margin-bottom: 10px;
-      font-size: 20px;
-      color: #34495e;
+
+    #heroHeader .hero-subtitle {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.9;
     }
-    button {
-      margin-top: 20px;
-      padding: 12px 25px;
-      font-size: 16px;
-      font-weight: 600;
-      background-color: #3498db;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s ease;
+
+    .progress-sticky {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: white;
+      border-bottom: 1px solid var(--border-muted);
+      padding: 12px 16px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
-    button:hover {
-      background-color: #2980b9;
+
+    .progress-content {
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
     }
-    #counter {
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: bold;
-    }
+
     .progress-bar-container {
-      width: 100%;
-      background: #ddd;
-      height: 20px;
-      border-radius: 10px;
-      margin-top: 10px;
+      flex: 1;
+      height: 4px;
+      background: var(--border-muted);
+      border-radius: 2px;
       overflow: hidden;
     }
+
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(to right, #4caf50, #81c784);
-      border-radius: 10px 0 0 10px;
-      transition: width 0.5s;
+      background: linear-gradient(90deg, var(--accent-green), #6ee7b7);
+      transition: width 0.5s ease;
     }
+
+    #formContainer {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    .section {
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s ease;
+      user-select: none;
+    }
+
+    .section-header:hover {
+      background: var(--bg-light);
+    }
+
+    .section-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .section-toggle {
+      font-size: 18px;
+      color: var(--text-muted);
+      transition: transform 0.3s ease;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .section.open .section-toggle {
+      transform: rotate(180deg);
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .section-badge {
+      display: inline-block;
+      font-size: 12px;
+      background: var(--accent-green-light);
+      color: #065f46;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    .section-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .section.open .section-body {
+      max-height: 9999px;
+    }
+
+    .section-content {
+      padding: 0 16px 16px 16px;
+    }
+
+    .item {
+      display: block;
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .item label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    input[type="file"] {
+      display: block;
+      width: 100%;
+      padding: 20px 16px;
+      border: 2px dashed var(--border-dashed);
+      border-radius: 6px;
+      background: var(--bg-light);
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    input[type="file"]:hover {
+      border-color: var(--primary);
+      background: #f0f9ff;
+    }
+
+    input[type="file"]::file-selector-button {
+      padding: 8px 16px;
+      background-color: var(--primary);
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    #actionsContainer {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    .download-btn {
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
+      background-color: var(--primary);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-bottom: 12px;
+    }
+
+    .download-btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .download-btn::before {
+      content: '⬇ ';
+      margin-right: 8px;
+    }
+
+    #installButton {
+      display: none;
+      background-color: var(--accent-green);
+    }
+
+    #installButton:hover {
+      background-color: #059669;
+    }
+
+    .info-box {
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .info-privacy {
+      background: var(--accent-green-light);
+      border-left: 3px solid var(--accent-green);
+      color: #065f46;
+    }
+
+    .info-install {
+      background: #fef3c7;
+      border-left: 3px solid #f59e0b;
+      color: #92400e;
+    }
+
+    #downloadProgress {
+      display: none;
+      padding: 12px 16px;
+      background: var(--bg-light);
+      border-radius: 6px;
+      margin-top: 12px;
+    }
+
+    #downloadProgress p {
+      margin: 0 0 8px 0;
+      font-size: 13px;
+    }
+
+    h3 { display: none; }
   </style>
 </head>
 <body>
-<div style="background:#e8f5e9;border-left:4px solid #4caf50;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:13px;color:#2e7d32;">
-  🔒 <strong>Privacy:</strong> tutti i file che carichi rimangono esclusivamente nel tuo browser. Nessun dato viene mai inviato a server esterni. L'app funziona completamente offline e non effettua connessioni a internet.
+<div id="heroHeader">
+  <h1>Caricamento Documenti Modello 730 Congiunto</h1>
+  <p class="hero-subtitle">🔒 Privacy: tutti i file rimangono nel tuo browser. Offline-first, zero tracciamento.</p>
 </div>
-<h1>Caricamento Documenti Modello 730 Congiunto</h1>
-<form id="uploadForm">
 
-  <div class="section" id="section1">
-    <h3>1. Dati personali</h3>
-    <div class="item">Documento d'identità tuo: <input type="file" name="1_documento_identita" multiple></div>
-    <div class="item">Documento d'identità partner: <input type="file" name="1_documento_identita_partner" multiple></div>
-    <div class="item">Tessera sanitaria tua: <input type="file" name="1_tessera_sanitaria" multiple></div>
-    <div class="item">Tessera sanitaria partner: <input type="file" name="1_tessera_sanitaria_partner" multiple></div>
-    <div class="item">Tessera esenzione SSN (patologie con esenzione): <input type="file" name="1_tessera_esenzione_ssn" multiple></div>
-    <div class="item">Verbali di invalidità (Commissioni Pubbliche – dichiarante, coniuge, familiari): <input type="file" name="1_verbali_invalidita" multiple></div>
-    <div class="item">Altro: <input type="file" name="1_altro" multiple></div>
+<div class="progress-sticky" id="progressSticky">
+  <div class="progress-content">
+    <span id="progressText">Sezioni: 0/10</span>
+    <div class="progress-bar-container">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+    <span id="fileCountText">File: 0</span>
+  </div>
+</div>
+
+<div id="formContainer">
+  <form id="uploadForm">
+
+  <div class="section open" id="section1">
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-toggle">▾</span>
+        <h3 class="section-title">1. Dati personali</h3>
+      </div>
+      <span class="section-badge">Nessun file</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
+        <div class="item">Documento d'identità tuo: <input type="file" name="1_documento_identita" multiple></div>
+        <div class="item">Documento d'identità partner: <input type="file" name="1_documento_identita_partner" multiple></div>
+        <div class="item">Tessera sanitaria tua: <input type="file" name="1_tessera_sanitaria" multiple></div>
+        <div class="item">Tessera sanitaria partner: <input type="file" name="1_tessera_sanitaria_partner" multiple></div>
+        <div class="item">Tessera esenzione SSN (patologie con esenzione): <input type="file" name="1_tessera_esenzione_ssn" multiple></div>
+        <div class="item">Verbali di invalidità (Commissioni Pubbliche – dichiarante, coniuge, familiari): <input type="file" name="1_verbali_invalidita" multiple></div>
+        <div class="item">Altro: <input type="file" name="1_altro" multiple></div>
+      </div>
+    </div>
   </div>
 
   <div class="section" id="section2">
-    <h3>2. Dati generali</h3>
-    <div class="item">Dichiarazione redditi precedente (Mod. 730/2025 o REDDITI 2025) e dichiarazioni integrative: <input type="file" name="2_dichiarazione_precedente" multiple></div>
-    <div class="item">CU 2026 di familiari fiscalmente a carico (coniuge, figli): <input type="file" name="2_cu_familiari_carico" multiple></div>
-    <div class="item">Documentazione handicap Legge 104/92 (per figli portatori di handicap): <input type="file" name="2_doc_handicap_104" multiple></div>
-    <div class="item">Altro: <input type="file" name="2_altro" multiple></div>
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-toggle">▾</span>
+        <h3 class="section-title">2. Dati generali</h3>
+      </div>
+      <span class="section-badge">Nessun file</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
+        <div class="item">Dichiarazione redditi precedente (Mod. 730/2025 o REDDITI 2025) e dichiarazioni integrative: <input type="file" name="2_dichiarazione_precedente" multiple></div>
+        <div class="item">CU 2026 di familiari fiscalmente a carico (coniuge, figli): <input type="file" name="2_cu_familiari_carico" multiple></div>
+        <div class="item">Documentazione handicap Legge 104/92 (per figli portatori di handicap): <input type="file" name="2_doc_handicap_104" multiple></div>
+        <div class="item">Altro: <input type="file" name="2_altro" multiple></div>
+      </div>
+    </div>
   </div>
 
   <div class="section" id="section3">
-    <h3>3. Terreni e fabbricati</h3>
-    <div class="item">Visure catastali aggiornate: <input type="file" name="3_visure_catastali" multiple></div>
-    <div class="item">Atti notarili acquisti/vendite/eredità 2025: <input type="file" name="3_atti_notarili" multiple></div>
-    <div class="item">Contratti di locazione 2025: <input type="file" name="3_contratti_locazione" multiple></div>
-    <div class="item">Cedolare secca – Mod. 69 / Siria / RLI e comunicazione all'inquilino: <input type="file" name="3_cedolare_secca" multiple></div>
-    <div class="item">Locazioni brevi – CU 2025 e CU 2026 rilasciate da intermediari: <input type="file" name="3_cu_locazioni_brevi" multiple></div>
-    <div class="item">Locazioni brevi – Codice Identificativo Nazionale (CIN): <input type="file" name="3_cin" multiple></div>
-    <div class="item">Altro: <input type="file" name="3_altro" multiple></div>
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-toggle">▾</span>
+        <h3 class="section-title">3. Terreni e fabbricati</h3>
+      </div>
+      <span class="section-badge">Nessun file</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
+        <div class="item">Visure catastali aggiornate: <input type="file" name="3_visure_catastali" multiple></div>
+        <div class="item">Atti notarili acquisti/vendite/eredità 2025: <input type="file" name="3_atti_notarili" multiple></div>
+        <div class="item">Contratti di locazione 2025: <input type="file" name="3_contratti_locazione" multiple></div>
+        <div class="item">Cedolare secca – Mod. 69 / Siria / RLI e comunicazione all'inquilino: <input type="file" name="3_cedolare_secca" multiple></div>
+        <div class="item">Locazioni brevi – CU 2025 e CU 2026 rilasciate da intermediari: <input type="file" name="3_cu_locazioni_brevi" multiple></div>
+        <div class="item">Locazioni brevi – Codice Identificativo Nazionale (CIN): <input type="file" name="3_cin" multiple></div>
+        <div class="item">Altro: <input type="file" name="3_altro" multiple></div>
+      </div>
+    </div>
   </div>
 
   <div class="section" id="section4">
-    <h3>4. Redditi</h3>
-    <div class="item">Certificazione Unica 2026 tua (lavoro dipendente, pensione, assimilati): <input type="file" name="4_cu2026" multiple></div>
-    <div class="item">Certificazione Unica 2026 partner: <input type="file" name="4_cu2026_partner" multiple></div>
-    <div class="item">Documentazione pensioni erogate da stati esteri: <input type="file" name="4_pensioni_estere" multiple></div>
-    <div class="item">Perizia giurata di stima + Mod. F24 per rivalutazione terreni/partecipazioni 2025: <input type="file" name="4_perizia_rivalutazione" multiple></div>
-    <div class="item">Imposte e oneri rimborsati nel 2025 (se detratti/dedotti in anni precedenti): <input type="file" name="4_oneri_rimborsati" multiple></div>
-    <div class="item">Altro: <input type="file" name="4_altro" multiple></div>
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-toggle">▾</span>
+        <h3 class="section-title">4. Redditi</h3>
+      </div>
+      <span class="section-badge">Nessun file</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
+        <div class="item">Certificazione Unica 2026 tua (lavoro dipendente, pensione, assimilati): <input type="file" name="4_cu2026" multiple></div>
+        <div class="item">Certificazione Unica 2026 partner: <input type="file" name="4_cu2026_partner" multiple></div>
+        <div class="item">Documentazione pensioni erogate da stati esteri: <input type="file" name="4_pensioni_estere" multiple></div>
+        <div class="item">Perizia giurata di stima + Mod. F24 per rivalutazione terreni/partecipazioni 2025: <input type="file" name="4_perizia_rivalutazione" multiple></div>
+        <div class="item">Imposte e oneri rimborsati nel 2025 (se detratti/dedotti in anni precedenti): <input type="file" name="4_oneri_rimborsati" multiple></div>
+        <div class="item">Altro: <input type="file" name="4_altro" multiple></div>
+      </div>
+    </div>
   </div>
 
   <div class="section" id="section5">
-    <h3>5. Altri redditi</h3>
-    <div class="item">Altri redditi 2025 (assegni periodici da ex coniuge, indennità pubbliche, utili societari, opere d'ingegno, attività commerciali occasionali, borse di studio, sport dilettantistico, partecipazioni in società di persone, capital gains, mance, ecc.): <input type="file" name="5_altri_redditi" multiple></div>
-    <div class="item">Altro: <input type="file" name="5_altro" multiple></div>
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-toggle">▾</span>
+        <h3 class="section-title">5. Altri redditi</h3>
+      </div>
+      <span class="section-badge">Nessun file</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
+        <div class="item">Altri redditi 2025 (assegni periodici da ex coniuge, indennità pubbliche, utili societari, opere d'ingegno, attività commerciali occasionali, borse di studio, sport dilettantistico, partecipazioni in società di persone, capital gains, mance, ecc.): <input type="file" name="5_altri_redditi" multiple></div>
+        <div class="item">Altro: <input type="file" name="5_altro" multiple></div>
+      </div>
+    </div>
   </div>
 
   <div class="section" id="section6">
-    <h3>6. Oneri e spese detraibili</h3>
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-toggle">▾</span>
+        <h3 class="section-title">6. Oneri e spese detraibili</h3>
+      </div>
+      <span class="section-badge">Nessun file</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
     <div class="item">Spese sanitarie (fatture, scontrini parlanti con AIC, ricevute medici): <input type="file" name="6_spese_sanitarie" multiple></div>
     <div class="item">Spese per minori o maggiorenni con DSA (certificato medico + fatture): <input type="file" name="6_spese_dsa" multiple></div>
     <div class="item">Spese assistenza infermieristica e riabilitativa: <input type="file" name="6_assistenza_infermieristica" multiple></div>
@@ -213,10 +475,20 @@
     <div class="item">Contratti di leasing per acquisto abitazione principale (contratto + importi versati): <input type="file" name="6_leasing_abitazione" multiple></div>
     <div class="item">Cessione/sconto in fattura bonus edilizi – Modulo Comunicazione Agenzia Entrate + ricevuta trasmissione: <input type="file" name="6_cessione_credito" multiple></div>
     <div class="item">Altro: <input type="file" name="6_altro" multiple></div>
+      </div>
+    </div>
   </div>
 
   <div class="section" id="section7">
-    <h3>7. Oneri e spese deducibili</h3>
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-toggle">▾</span>
+        <h3 class="section-title">7. Oneri e spese deducibili</h3>
+      </div>
+      <span class="section-badge">Nessun file</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
     <div class="item">Contributi previdenziali obbligatori INPS dichiarante (gestione separata, agricoli, INAIL casalinghe): <input type="file" name="7_contributi_inps" multiple></div>
     <div class="item">Contributi previdenziali obbligatori INPS partner: <input type="file" name="7_contributi_inps_partner" multiple></div>
     <div class="item">Contributi volontari (ricongiunzione periodi assicurativi, riscatto anni di laurea): <input type="file" name="7_contributi_volontari" multiple></div>
@@ -230,48 +502,82 @@
     <div class="item">Erogazioni liberali a ONLUS / APS / ETS / enti universitari / enti parco regionali e nazionali: <input type="file" name="7_erogazioni_onlus_ets" multiple></div>
     <div class="item">Spese acquisto/costruzione immobili abitativi da destinare a locazione (≥ 8 anni): <input type="file" name="7_immobili_locazione" multiple></div>
     <div class="item">Altro: <input type="file" name="7_altro" multiple></div>
+      </div>
+    </div>
   </div>
 
   <div class="section" id="section8">
-    <h3>8. Acconti versati</h3>
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-toggle">▾</span>
+        <h3 class="section-title">8. Acconti versati</h3>
+      </div>
+      <span class="section-badge">Nessun file</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
     <div class="item">Modelli F24 – acconti IRPEF, Addizionale Comunale, Cedolare Secca e compensazioni d'imposta 2025/2026: <input type="file" name="8_modelli_f24" multiple></div>
     <div class="item">Altro: <input type="file" name="8_altro" multiple></div>
+      </div>
+    </div>
   </div>
 
   <div class="section" id="section9">
-    <h3>9. Redditi soggetti a tassazione speciale</h3>
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-toggle">▾</span>
+        <h3 class="section-title">9. Redditi soggetti a tassazione speciale</h3>
+      </div>
+      <span class="section-badge">Nessun file</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
     <div class="item">Plusvalenze finanziarie – cessioni partecipazioni qualificate/non qualificate, obbligazioni, capital gains: <input type="file" name="9_plusvalenze_finanziarie" multiple></div>
     <div class="item">Criptovalute – plusvalenze e altri proventi da cripto-attività: <input type="file" name="9_criptovalute" multiple></div>
     <div class="item">Investimenti finanziari e immobiliari all'estero – IVIE / IVAFE (monitoraggio fiscale): <input type="file" name="9_investimenti_estero" multiple></div>
     <div class="item">Redditi soggetti a tassazione separata, imposta sostitutiva, rivalutazione terreni/partecipazioni: <input type="file" name="9_tassazione_separata" multiple></div>
     <div class="item">Altro: <input type="file" name="9_altro" multiple></div>
+      </div>
+    </div>
   </div>
 
   <div class="section" id="section10">
-    <h3>10. Categorie speciali</h3>
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-toggle">▾</span>
+        <h3 class="section-title">10. Categorie speciali</h3>
+      </div>
+      <span class="section-badge">Nessun file</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
     <div class="item">Quadro K – Amministratori di condominio: elenco fornitori condominiali e dati catastali immobili con interventi parti comuni: <input type="file" name="10_quadro_k_condominio" multiple></div>
     <div class="item">Altro: <input type="file" name="10_altro" multiple></div>
+      </div>
+    </div>
   </div>
 
-</form>
-<div id="counter">Sezioni completate: 0 / 10</div>
-<div id="fileCounter">File caricati: 0</div>
-<div class="progress-bar-container">
-  <div id="progressBar" class="progress-bar"></div>
-</div>
-<button onclick="downloadAllZips()">Scarica Archivi</button>
-<button id="installButton" style="display:none; margin-top:20px; background-color:#27ae60;">Installa App</button>
-
-<div id="installHint" style="margin-top:20px; padding:12px 16px; background:#fff8e1; border-left:4px solid #f9a825; border-radius:8px; font-size:13px; color:#555;">
-  <strong>Installa come app</strong><br>
-  Su <strong>Chrome Android</strong>: tocca i tre puntini in alto a destra → <em>Aggiungi a schermata Home</em> (o <em>Installa app</em>).<br>
-  Se il pulsante verde <em>Installa App</em> compare sopra, puoi usare anche quello.
+  </form>
 </div>
 
-<div id="downloadProgress" style="display:none; margin-top:10px;">
-  <p>Preparazione archivi in corso...</p>
-  <div class="progress-bar-container">
-    <div id="progressBarDownload" class="progress-bar"></div>
+<div id="actionsContainer">
+  <button class="download-btn" onclick="downloadAllZips()">Scarica Archivi ZIP</button>
+  <button id="installButton" class="download-btn">Installa App</button>
+
+  <div class="info-box info-privacy">
+    🔒 <strong>Privacy:</strong> tutti i file rimangono nel tuo browser. Nessun dato inviato a server. Offline-first, zero tracciamento.
+  </div>
+
+  <div class="info-box info-install" id="installHint" style="display:none;">
+    <strong>Installa come app:</strong><br>
+    Su <strong>Chrome Android</strong>: tocca i tre puntini → <em>Aggiungi a schermata Home</em> (o <em>Installa app</em>).
+  </div>
+
+  <div id="downloadProgress">
+    <p>Preparazione archivi in corso...</p>
+    <div class="progress-bar-container">
+      <div id="progressBarDownload" class="progress-bar"></div>
+    </div>
   </div>
 </div>
 
@@ -281,6 +587,11 @@ const maxFileSize = 5 * 1024 * 1024;
 const maxFilenameLength = 100;
 
 document.querySelectorAll('input[type="file"]').forEach(input => { input.setAttribute('accept', '*/*'); });
+
+function toggleSection(headerEl) {
+  const section = headerEl.closest('.section');
+  section.classList.toggle('open');
+}
 
 function validateFiles(input) {
   for (const file of input.files) {
@@ -312,27 +623,43 @@ function updateCounter() {
 
   sections.forEach(section => {
     const inputs = section.querySelectorAll('input[type="file"]');
-    let hasFiles = false;
+    let sectionFileCount = 0;
 
     inputs.forEach(input => {
       if (input.files.length > 0) {
-        hasFiles = true;
+        completedSections++;
         totalFiles += input.files.length;
+        sectionFileCount += input.files.length;
       }
     });
 
-    if (hasFiles) completedSections++;
+    const badge = section.querySelector('.section-badge');
+    if (badge) {
+      if (sectionFileCount === 0) {
+        badge.textContent = 'Nessun file';
+      } else if (sectionFileCount === 1) {
+        badge.textContent = '1 file';
+      } else {
+        badge.textContent = sectionFileCount + ' file';
+      }
+    }
   });
 
-  document.getElementById('counter').innerText = `Sezioni completate: ${completedSections} / ${totalSections}`;
+  document.getElementById('progressText').innerText = `Sezioni: ${completedSections}/10`;
   document.getElementById('progressBar').style.width = (completedSections / totalSections) * 100 + '%';
-  document.getElementById('fileCounter').innerText = `File caricati: ${totalFiles}`;
+  document.getElementById('fileCountText').innerText = `File: ${totalFiles}`;
 }
 
 document.querySelectorAll('input[type="file"]').forEach(input => {
   input.addEventListener('change', function() {
     validateFiles(this);
     updateCounter();
+  });
+});
+
+document.querySelectorAll('.section-header').forEach(header => {
+  header.addEventListener('click', function() {
+    toggleSection(this);
   });
 });
 
@@ -359,7 +686,8 @@ function downloadAllZips() {
       let currentZip = new JSZip();
       let currentSize = 0;
       let zipIndex = 1;
-      const sectionName = section.querySelector('h3').innerText.trim().replace(/[^a-zA-Z0-9]/g, '_');
+      const titleEl = section.querySelector('h3');
+      const sectionName = titleEl ? titleEl.innerText.trim().replace(/[^a-zA-Z0-9]/g, '_') : 'section';
 
       files.forEach((file, idx) => {
         if (currentSize + file.size > maxZipSize) {
@@ -406,10 +734,10 @@ const installButton = document.getElementById('installButton');
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  installButton.style.display = 'block';
+  document.getElementById('installHint').style.display = 'block';
 
   installButton.addEventListener('click', () => {
-    installButton.style.display = 'none';
+    document.getElementById('installHint').style.display = 'none';
     deferredPrompt.prompt();
 
     deferredPrompt.userChoice.then((choiceResult) => {
