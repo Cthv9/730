@@ -598,6 +598,68 @@ const maxFilenameLength = 100;
 
 document.querySelectorAll('input[type="file"]').forEach(input => { input.setAttribute('accept', '*/*'); });
 
+// IndexedDB persistence so uploaded files survive page reloads / tab restores
+const IDB_NAME = '730-files';
+const IDB_STORE = 'files';
+let idb;
+
+function openIDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(IDB_NAME, 1);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(IDB_STORE)) {
+        db.createObjectStore(IDB_STORE, { keyPath: 'inputName' });
+      }
+    };
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+async function persistInput(input) {
+  if (!idb) return;
+  const files = Array.from(input.files);
+  const tx = idb.transaction(IDB_STORE, 'readwrite');
+  const store = tx.objectStore(IDB_STORE);
+  if (files.length === 0) {
+    store.delete(input.name);
+  } else {
+    const fileData = await Promise.all(files.map(async f => ({
+      name: f.name, type: f.type, lastModified: f.lastModified,
+      buffer: await f.arrayBuffer()
+    })));
+    store.put({ inputName: input.name, files: fileData });
+  }
+}
+
+async function restoreAllFiles() {
+  if (!idb) return;
+  const tx = idb.transaction(IDB_STORE, 'readonly');
+  const store = tx.objectStore(IDB_STORE);
+  const inputs = document.querySelectorAll('input[type="file"]');
+  for (const input of inputs) {
+    const rec = await new Promise(r => {
+      const req = store.get(input.name);
+      req.onsuccess = () => r(req.result);
+      req.onerror = () => r(null);
+    });
+    if (rec && rec.files && rec.files.length > 0) {
+      const dt = new DataTransfer();
+      rec.files.forEach(({ name, type, lastModified, buffer }) => {
+        dt.items.add(new File([buffer], name, { type, lastModified }));
+      });
+      input.files = dt.files;
+    }
+  }
+  updateCounter();
+}
+
+openIDB().then(db => {
+  idb = db;
+  restoreAllFiles();
+}).catch(() => {});
+
 function toggleSection(headerEl) {
   const section = headerEl.closest('.section');
   section.classList.toggle('open');
@@ -637,11 +699,14 @@ function updateCounter() {
 
     inputs.forEach(input => {
       if (input.files.length > 0) {
-        completedSections++;
         totalFiles += input.files.length;
         sectionFileCount += input.files.length;
       }
     });
+
+    if (sectionFileCount > 0) {
+      completedSections++;
+    }
 
     const badge = section.querySelector('.section-badge');
     if (badge) {
@@ -663,6 +728,7 @@ function updateCounter() {
 document.querySelectorAll('input[type="file"]').forEach(input => {
   input.addEventListener('change', function() {
     validateFiles(this);
+    persistInput(this);
     updateCounter();
   });
 });
