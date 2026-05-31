@@ -619,30 +619,34 @@ function openIDB() {
 async function persistInput(input) {
   if (!idb) return;
   const files = Array.from(input.files);
-  const tx = idb.transaction(IDB_STORE, 'readwrite');
-  const store = tx.objectStore(IDB_STORE);
+  // Read ArrayBuffers BEFORE opening the transaction: awaiting inside a
+  // transaction causes it to auto-commit, making the subsequent put() fail.
   if (files.length === 0) {
-    store.delete(input.name);
-  } else {
-    const fileData = await Promise.all(files.map(async f => ({
-      name: f.name, type: f.type, lastModified: f.lastModified,
-      buffer: await f.arrayBuffer()
-    })));
-    store.put({ inputName: input.name, files: fileData });
+    const tx = idb.transaction(IDB_STORE, 'readwrite');
+    tx.objectStore(IDB_STORE).delete(input.name);
+    return;
   }
+  const fileData = await Promise.all(files.map(async f => ({
+    name: f.name, type: f.type, lastModified: f.lastModified,
+    buffer: await f.arrayBuffer()
+  })));
+  const tx = idb.transaction(IDB_STORE, 'readwrite');
+  tx.objectStore(IDB_STORE).put({ inputName: input.name, files: fileData });
 }
 
 async function restoreAllFiles() {
   if (!idb) return;
-  const tx = idb.transaction(IDB_STORE, 'readonly');
-  const store = tx.objectStore(IDB_STORE);
-  const inputs = document.querySelectorAll('input[type="file"]');
-  for (const input of inputs) {
-    const rec = await new Promise(r => {
-      const req = store.get(input.name);
-      req.onsuccess = () => r(req.result);
-      req.onerror = () => r(null);
-    });
+  // Fetch all records in a single synchronous transaction (no await inside).
+  const allRecords = await new Promise((resolve, reject) => {
+    const tx = idb.transaction(IDB_STORE, 'readonly');
+    const req = tx.objectStore(IDB_STORE).getAll();
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+  const byName = {};
+  allRecords.forEach(rec => { byName[rec.inputName] = rec; });
+  document.querySelectorAll('input[type="file"]').forEach(input => {
+    const rec = byName[input.name];
     if (rec && rec.files && rec.files.length > 0) {
       const dt = new DataTransfer();
       rec.files.forEach(({ name, type, lastModified, buffer }) => {
@@ -650,7 +654,7 @@ async function restoreAllFiles() {
       });
       input.files = dt.files;
     }
-  }
+  });
   updateCounter();
 }
 
