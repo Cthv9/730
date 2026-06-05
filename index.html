@@ -340,6 +340,24 @@
       background: transparent;
       margin-top: 40px;
     }
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 999;
+      pointer-events: none;
+      max-width: 90%;
+      text-align: center;
+    }
+    #toast.show { opacity: 1; }
   </style>
 </head>
 <body>
@@ -614,6 +632,7 @@
 </div>
 
 <div id="footer">made with ❤️ by DF</div>
+<div id="toast"></div>
 
 <script>
 const allowedExtensions = ['bmp', 'doc', 'docx', 'jpeg', 'jpg', 'mov', 'mp4', 'mpeg', 'odt', 'pdf', 'png', 'rtf', 'tif', 'tiff', 'txt', 'zip'];
@@ -693,9 +712,21 @@ function toggleSection(headerEl) {
   section.classList.toggle('open');
 }
 
-function validateFiles(input) {
-  for (const file of input.files) {
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+async function processFileInput(input) {
+  const rawFiles = Array.from(input.files);
+  const expandedFiles = [];
+
+  for (const file of rawFiles) {
     const ext = file.name.split('.').pop().toLowerCase();
+
     if (!allowedExtensions.includes(ext)) {
       alert(`Formato file non consentito: ${file.name}`);
       input.value = '';
@@ -706,11 +737,29 @@ function validateFiles(input) {
       input.value = '';
       return;
     }
-    if (file.size > maxFileSize) {
-      const proceed = confirm(`Il file ${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB) supera 5 MB e verrà inserito in un archivio separato. Continuare?`);
-      if (!proceed) { input.value = ''; return; }
+
+    if (ext === 'zip' && file.size > maxFileSize) {
+      try {
+        const jszip = await JSZip.loadAsync(file);
+        const entries = Object.values(jszip.files).filter(e => !e.dir);
+        const extracted = await Promise.all(entries.map(async entry => {
+          const blob = await entry.async('blob');
+          const name = entry.name.split('/').pop() || entry.name;
+          return new File([blob], name, { type: blob.type });
+        }));
+        showToast(`📦 ${file.name} espanso: ${extracted.length} file estratti`);
+        expandedFiles.push(...extracted);
+      } catch {
+        expandedFiles.push(file);
+      }
+    } else {
+      expandedFiles.push(file);
     }
   }
+
+  const dt = new DataTransfer();
+  expandedFiles.forEach(f => dt.items.add(f));
+  input.files = dt.files;
 }
 
 function updateCounter() {
@@ -753,8 +802,8 @@ function updateCounter() {
 }
 
 document.querySelectorAll('input[type="file"]').forEach(input => {
-  input.addEventListener('change', function() {
-    validateFiles(this);
+  input.addEventListener('change', async function() {
+    await processFileInput(this);
     persistInput(this);
     updateCounter();
   });
