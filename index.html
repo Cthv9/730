@@ -266,6 +266,30 @@
       margin-right: 8px;
     }
 
+    .reset-btn {
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
+      background-color: #ef4444;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-bottom: 12px;
+    }
+
+    .reset-btn:hover {
+      background-color: #dc2626;
+    }
+
+    .reset-btn::before {
+      content: '🗑 ';
+      margin-right: 4px;
+    }
+
     #installButton {
       display: none;
       background-color: var(--accent-green);
@@ -569,6 +593,7 @@
 
 <div id="actionsContainer">
   <button class="download-btn" onclick="downloadAllZips()">Scarica Archivi ZIP</button>
+  <button class="reset-btn" onclick="resetAllFiles()">Reset — Cancella tutti i file</button>
   <button id="installButton" class="download-btn">Installa App</button>
 
   <div class="info-box info-privacy">
@@ -682,9 +707,8 @@ function validateFiles(input) {
       return;
     }
     if (file.size > maxFileSize) {
-      alert(`Il file supera il limite di 5 MB: ${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)`);
-      input.value = '';
-      return;
+      const proceed = confirm(`Il file ${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB) supera 5 MB e verrà inserito in un archivio separato. Continuare?`);
+      if (!proceed) { input.value = ''; return; }
     }
   }
 }
@@ -769,7 +793,7 @@ function downloadAllZips() {
       const sectionName = titleEl ? titleEl.innerText.trim().replace(/[^a-zA-Z0-9]/g, '_') : 'section';
 
       files.forEach((file, idx) => {
-        if (currentSize + file.size > maxZipSize) {
+        if (currentSize > 0 && currentSize + file.size > maxZipSize) {
           currentZip.generateAsync({type: "blob"}).then(content => {
             saveAs(content, `${sectionName}_${zipIndex}.zip`);
           });
@@ -795,6 +819,20 @@ function downloadAllZips() {
   setTimeout(() => {
     document.getElementById('downloadProgress').style.display = 'none';
   }, 1000);
+}
+
+async function resetAllFiles() {
+  if (!confirm('Sei sicuro di voler cancellare tutti i file caricati? L\'operazione è irreversibile.')) return;
+  document.querySelectorAll('input[type="file"]').forEach(input => {
+    input.value = '';
+    const dt = new DataTransfer();
+    input.files = dt.files;
+  });
+  if (idb) {
+    const tx = idb.transaction(IDB_STORE, 'readwrite');
+    tx.objectStore(IDB_STORE).clear();
+  }
+  updateCounter();
 }
 
 if ('serviceWorker' in navigator) {
